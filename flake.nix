@@ -47,6 +47,11 @@
         system: let
           pkgs-stable = nixpkgs-stable.legacyPackages.${system};
           pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+
+          # These are all of our VM tests.
+          tests = import ./nix/tests/default.nix {
+            nixpkgs = pkgs-unstable;
+          };
         in {
           devShell.${system} = pkgs-stable.callPackage ./nix/devShell.nix {
             zig = zig.packages.${system}."0.14.0";
@@ -72,6 +77,8 @@
 
           formatter.${system} = pkgs-stable.alejandra;
 
+          checks.${system} = tests;
+
           apps.${system} = let
             runVM = (
               module: let
@@ -91,15 +98,29 @@
                 program = "${program}";
               }
             );
-          in {
-            wayland-cinnamon = runVM ./nix/vm/wayland-cinnamon.nix;
-            wayland-gnome = runVM ./nix/vm/wayland-gnome.nix;
-            wayland-plasma6 = runVM ./nix/vm/wayland-plasma6.nix;
-            x11-cinnamon = runVM ./nix/vm/x11-cinnamon.nix;
-            x11-gnome = runVM ./nix/vm/x11-gnome.nix;
-            x11-plasma6 = runVM ./nix/vm/x11-plasma6.nix;
-            x11-xfce = runVM ./nix/vm/x11-xfce.nix;
-          };
+          in
+            {
+              wayland-cinnamon = runVM ./nix/vm/wayland-cinnamon.nix;
+              wayland-gnome = runVM ./nix/vm/wayland-gnome.nix;
+              wayland-plasma6 = runVM ./nix/vm/wayland-plasma6.nix;
+              x11-cinnamon = runVM ./nix/vm/x11-cinnamon.nix;
+              x11-gnome = runVM ./nix/vm/x11-gnome.nix;
+              x11-plasma6 = runVM ./nix/vm/x11-plasma6.nix;
+              x11-xfce = runVM ./nix/vm/x11-xfce.nix;
+            }
+            // (pkgs-stable.lib.mapAttrs' (
+                # This adds all of our VM tests as runnable apps that load
+                # the interactive driver (repl). We map all the names of the
+                # tests to "test-<name>" so its distinct from other apps.
+                name: value: {
+                  name = "test-${name}";
+                  value = {
+                    type = "app";
+                    program = pkgs-unstable.lib.getExe tests.${name}.driverInteractive;
+                  };
+                }
+              )
+              tests);
         }
         # Our supported systems are the same supported systems as the Zig binaries.
       ) (builtins.attrNames zig.packages)
