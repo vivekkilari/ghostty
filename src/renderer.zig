@@ -73,6 +73,8 @@ test {
     // Our comptime-chosen renderer
     _ = Renderer;
 
+    _ = @import("renderer/OpenGLv2.zig");
+
     _ = cursor;
     _ = message;
     _ = shadertoy;

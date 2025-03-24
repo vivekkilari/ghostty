@@ -39,6 +39,14 @@ pub const freetype_load_flags_default: FreetypeLoadFlags = if (FreetypeLoadFlags
 pub const Options = struct {
     size: DesiredSize,
     freetype_load_flags: FreetypeLoadFlags = freetype_load_flags_default,
+
+    /// The options used for all tests by default. This sets a fixed
+    /// point with a fixed DPI across platforms.
+    pub const testDefault: Options = .{ .size = .{
+        .points = 12,
+        .xdpi = 96,
+        .ydpi = 96,
+    } };
 };
 
 /// The desired size for loading a font.
