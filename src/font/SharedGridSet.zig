@@ -291,6 +291,15 @@ fn collection(
             load_options.faceOptions(),
         ) },
     );
+    _ = try c.add(
+        self.alloc,
+        .regular,
+        .{ .fallback_loaded = try Face.init(
+            self.font_lib,
+            font.embedded.symbols,
+            load_options.faceOptions(),
+        ) },
+    );
 
     // On macOS, always search for and add the Apple Emoji font
     // as our preferred emoji font for fallback. We do this in case

@@ -6,12 +6,13 @@
 //! redistribution and include their license as necessary.
 
 /// Default fonts that we prefer for Ghostty.
-pub const regular = @embedFile("res/JetBrainsMonoNerdFont-Regular.ttf");
-pub const bold = @embedFile("res/JetBrainsMonoNerdFont-Bold.ttf");
-pub const italic = @embedFile("res/JetBrainsMonoNerdFont-Italic.ttf");
-pub const bold_italic = @embedFile("res/JetBrainsMonoNerdFont-BoldItalic.ttf");
+pub const regular = @embedFile("res/JetBrainsMono-Regular.ttf");
+pub const bold = @embedFile("res/JetBrainsMono-Bold.ttf");
+pub const italic = @embedFile("res/JetBrainsMono-Italic.ttf");
+pub const bold_italic = @embedFile("res/JetBrainsMono-BoldItalic.ttf");
 pub const emoji = @embedFile("res/NotoColorEmoji.ttf");
 pub const emoji_text = @embedFile("res/NotoEmoji-Regular.ttf");
+pub const symbols = @embedFile("res/SymbolsNerdFontMono-Regular.ttf");
 
 /// Fonts with general properties
 pub const arabic = @embedFile("res/KawkabMono-Regular.ttf");
@@ -24,7 +25,7 @@ pub const nerd_font = @embedFile("res/JetBrainsMonoNerdFont-Regular.ttf");
 pub const code_new_roman = @embedFile("res/CodeNewRoman-Regular.otf");
 pub const inconsolata = @embedFile("res/Inconsolata-Regular.ttf");
 pub const geist_mono = @embedFile("res/GeistMono-Regular.ttf");
-pub const jetbrains_mono = @embedFile("res/JetBrainsMonoNoNF-Regular.ttf");
+pub const jetbrains_mono = @embedFile("res/JetBrainsMono-Regular.ttf");
 pub const julia_mono = @embedFile("res/JuliaMono-Regular.ttf");
 
 /// Cozette is a unique font because it embeds some emoji characters
