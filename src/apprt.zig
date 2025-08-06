@@ -22,6 +22,7 @@ pub const none = @import("apprt/none.zig");
 pub const browser = @import("apprt/browser.zig");
 pub const embedded = @import("apprt/embedded.zig");
 pub const surface = @import("apprt/surface.zig");
+pub const winui = @import("apprt/winui.zig");
 
 pub const Action = action.Action;
 pub const Target = action.Target;
@@ -45,6 +46,7 @@ pub const runtime = switch (build_config.artifact) {
         .none => none,
         .gtk => gtk,
         .@"gtk-ng" => gtk_ng,
+        .winui => winui,
     },
     .lib => embedded,
     .wasm_module => browser,
@@ -68,9 +70,12 @@ pub const Runtime = enum {
     /// files, etc.
     @"gtk-ng",
 
+    winui,
+
     pub fn default(target: std.Target) Runtime {
         // The Linux default is GTK because it is full featured.
         if (target.os.tag == .linux) return .gtk;
+        if (target.os.tag == .windows) return .winui;
 
         // Otherwise, we do NONE so we don't create an exe and we
         // create libghostty.

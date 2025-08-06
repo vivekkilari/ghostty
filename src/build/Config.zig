@@ -79,6 +79,11 @@ pub fn init(b: *std.Build) !Config {
             result = genericMacOSTarget(b, result.query.cpu_arch);
         }
 
+        // NOTE:(noveze) Windows test code
+        if (result.result.os.tag == .windows) {
+            result = genericWindowsTarget(b, result.query.cpu_arch);
+        }
+
         // If we have no minimum OS version, we set the default based on
         // our tag. Not all tags have a minimum so this may be null.
         if (result.query.os_version_min == null) {
@@ -502,6 +507,9 @@ pub fn osVersionMin(tag: std.Target.Os.Tag) ?std.Target.Query.OsVersion {
             .patch = 0,
         } },
 
+        // NOTE:(noveze) Windows test code
+        .windows => .{ .windows = .win10 },
+
         // This should never happen currently. If we add a new target then
         // we should add a new case here.
         else => null,
@@ -521,6 +529,17 @@ pub fn genericMacOSTarget(
         .cpu_arch = arch orelse builtin.target.cpu.arch,
         .os_tag = .macos,
         .os_version_min = osVersionMin(.macos),
+    });
+}
+
+pub fn genericWindowsTarget(
+    b: *std.Build,
+    arch: ?std.Target.Cpu.Arch,
+) std.Build.ResolvedTarget {
+    return b.resolveTargetQuery(.{
+        .cpu_arch = arch orelse builtin.target.cpu.arch,
+        .os_tag = .windows,
+        .os_version_min = osVersionMin(.windows),
     });
 }
 

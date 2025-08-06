@@ -47,6 +47,7 @@ pub fn init(b: *std.Build, cfg: *const Config) !GhosttyResources {
 
         // Windows doesn't have the binaries below.
         if (os_tag == .windows) break :terminfo;
+        std.debug.print("here\n", .{});
 
         // Convert to termcap source format if thats helpful to people and
         // install it. The resulting value here is the termcap source in case

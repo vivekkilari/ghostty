@@ -552,6 +552,7 @@ pub fn add(
             .none => {},
             .gtk => try self.addGTK(step),
             .@"gtk-ng" => try self.addGtkNg(step),
+            .winui => {},
         }
     }
 
